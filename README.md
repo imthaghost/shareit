@@ -4,7 +4,7 @@
   </a> -->
 </p>
 <p align="center">
-Share images and videos anonymously with a single command! 
+Share images and videos anonymously with a single command! No need to worry or wonder where the media is being stored, the URL is added directly to your clipboard so just paste and go!
 </p>
 <br>
 <!-- <p align="center"><a href="https://goclone.herokuapp.com/">Official Website</a></p> -->

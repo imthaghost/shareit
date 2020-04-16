@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/atotto/clipboard"
+	"github.com/fatih/color"
 	"github.com/imthaghost/shareit/upload"
 )
 
@@ -14,6 +15,7 @@ func shareit(args []string) {
 	data := upload.FileUpload(anonurl, filepath, "file")
 	// get short link
 	link := data.Data.File.URL.Short
+	color.Green(link + " " + "copied to clipboard!")
 	// copy to clipboard
 	clipboard.WriteAll(link)
 }

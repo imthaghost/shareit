@@ -3,12 +3,13 @@ package upload
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"os"
+
+	"github.com/imthaghost/shareit/messages"
 )
 
 // Innermost ...
@@ -43,7 +44,10 @@ func FileUpload(url string, filepath string, key string) Outmost {
 	// add the file
 	f, err := os.Open(filepath)
 	if err != nil {
-		panic(err)
+		// error message
+		messages.ErrorMessage("File does not exist in this path")
+		// system exit
+		os.Exit(1)
 	}
 
 	defer f.Close()
@@ -51,25 +55,39 @@ func FileUpload(url string, filepath string, key string) Outmost {
 	// create form field for file
 	fw, err := w.CreateFormFile(key, filepath)
 	if err != nil {
-		panic(err)
+		// error message
+		messages.ErrorMessage("Failed to parse form")
+		// system exit
+		os.Exit(1)
+
 	}
 	// copy the file
 	if _, err = io.Copy(fw, f); err != nil {
-		panic(err)
+		// error message
+		messages.ErrorMessage("Failed to copy file")
+		// system exit
+		os.Exit(1)
 	}
 	// Add the other fields
 	if fw, err = w.CreateFormField(key); err != nil {
-		panic(err)
+		// error message
+		messages.ErrorMessage("Failed to parse form")
+		// system exit
+		os.Exit(1)
 	}
 	if _, err = fw.Write([]byte(key)); err != nil {
-		panic(err)
+		// error message
+		messages.ErrorMessage("Failed to write file")
+		// system exit
+		os.Exit(1)
 	}
 	// close
 	w.Close()
 	// set up request for submission
 	req, err := http.NewRequest("POST", url, &b)
 	if err != nil {
-		panic(err)
+		// system exit
+		os.Exit(1)
 	}
 	// set header content type
 	req.Header.Set("Content-Type", w.FormDataContentType())
@@ -78,12 +96,18 @@ func FileUpload(url string, filepath string, key string) Outmost {
 	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		// error message
+		messages.ErrorMessage("Failed to send data")
+		// system exit
+		os.Exit(1)
 	}
 
 	// check the response
 	if res.StatusCode != http.StatusOK {
-		err = fmt.Errorf("bad status: %s", res.Status)
+		// error message
+		messages.ErrorMessage(res.Status)
+		// system exit
+		os.Exit(1)
 	}
 
 	jsonData, err := ioutil.ReadAll(res.Body)

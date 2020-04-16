@@ -8,10 +8,12 @@ import (
 )
 
 var (
-	// Flags
+	// todo Flags
 	// imgur bool
+	// streamable
+	// sendvid
+	// ffsend
 	// gofile bool
-	// Todo others :)
 
 	// Root cmd
 	rootCmd = &cobra.Command{

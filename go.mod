@@ -7,4 +7,5 @@ require (
 	github.com/fatih/color v1.9.0
 	github.com/labstack/gommon v0.3.0
 	github.com/spf13/cobra v1.0.0
+	github.com/wybiral/torgo v0.0.0-20190413024533-a19a6c8a5048 // indirect
 )
